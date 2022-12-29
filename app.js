@@ -26,17 +26,6 @@ app.post("/register", async (req, res) => {
 
     const myEncPw = await bcrypt.hash(password, 10);
 
-    User.create({
-      firstName,
-      lastName,
-      email: email.toLowerCase(),
-      country,
-      password: myEncPw,
-    })
-      .then(console.log("User Registered"))
-      .catch((error) => console.log(error));
-
-    //token creaton
     const token = jwt.sign(
       { user_id: User._id, email },
       process.env.SECRET_KEY,
@@ -46,6 +35,18 @@ app.post("/register", async (req, res) => {
     );
     User.token = token;
 
+    User.create({
+      firstName,
+      lastName,
+      email: email.toLowerCase(),
+      country,
+      password: myEncPw,
+      token: token,
+    })
+      .then(console.log("User Registered"))
+      .catch((error) => console.log(error));
+
+    //token creaton
     res.status(201).json(User);
   } catch (error) {
     console.log(error);
