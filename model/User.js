@@ -24,4 +24,5 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// setting the type is cumpolsory
 module.exports = mongoose.model("user", userSchema);
