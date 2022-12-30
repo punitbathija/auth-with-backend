@@ -4,6 +4,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("./model/User");
+const auth = require("./middleware/auth");
 const app = express();
 app.use(express.json());
 
@@ -81,5 +82,9 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+app.get("/dashboard", auth, (req, res) => {
+  res.status(200).send("Welcome to the secret Section");
 });
 module.exports = app;
