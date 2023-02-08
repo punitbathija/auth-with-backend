@@ -1,9 +1,10 @@
 const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
+  console.log(req.cookies);
   const token =
-    req.header("Authorization").replace("Bearer ", "") ||
     req.cookies.token ||
+    req.header("Authorization").replace("Bearer ", "") ||
     req.body.token;
 
   if (!token) {
@@ -13,6 +14,7 @@ const auth = (req, res, next) => {
   try {
     const decode = jwt.verify(token, process.env.SECRET_KEY);
     console.log(decode);
+    req.user = decode;
   } catch (error) {
     return res.status(401).send("Invalid Token");
   }
